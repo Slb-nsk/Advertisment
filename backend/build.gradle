@@ -1,0 +1,63 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.5.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'gs-accessing-data-mysql'
+    version =  '0.1.0'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "mysql:mysql-connector-java:8.0.16"
+    compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+
+//    compile "org.springframework.boot:spring-boot-starter-freemarker:${springBootVersion}"
+
+    compile "org.hibernate:hibernate-core:5.4.2.Final"
+    compile "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+
+    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    reports {
+        html.enabled = true
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.advertisment.Application'
+        )
+    }
+}
